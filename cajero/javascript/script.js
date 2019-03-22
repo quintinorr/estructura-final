@@ -1,3 +1,6 @@
+// Grupo 6 Estructura de datos. Projgrama que simla un cajero automático en JavaScript.
+// Creado por Michael Vallejo.
+
 // Los centavos se representan en base a 100.
 // MONEDAS = [1000, 2000, 500, 200, 100, 50, 20, 10, 5, 1, (25/100), (10/100), (5/100), (1/100)];
 MONEDAS = [1000,  500, 100, 50, 20, 10, 5, 1, (25/100), (10/100), (5/100), (1/100)];
@@ -35,6 +38,16 @@ function GetCash(amount) {
             tmpAmount = 0;
             break;
         }
+    }
+
+    // Entra en esta condición si no hay una denominación que supla el cambio solicitado. (si el cliente solicita centavo, pero centavo no es una moneda agregada al sistema).
+    if( tmpAmount > 0) {
+        // Si las denominaciones que soporta el sistema son 1000, 500 y 200 y el monto solicitado es 1300; según el cálculo anterior, sobraran 100 pesos, 
+        // por lo que se debe recalcular para que el sistema devuelva 4 monedas de 200 y una de 500, en vez de una de 1000 y una de 200 (y sobren 100).
+        //
+        // TODO
+        //
+        console.log("Sobra dinero:" + tmpAmount);
     }
     
     return Result;

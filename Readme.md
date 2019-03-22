@@ -1,6 +1,6 @@
 # Proyecto final de estructura de datos
 
-### Integrantes:
+## Integrantes
 
 - Michael Vallejo
 - Kelvin Villar
