@@ -54,8 +54,18 @@ function GetCash(amount) {
 }
 
 function main() {
-    var arrResult = GetCash(1548.43);
-    console.log(arrResult);
+    let cash = 1548.43;
+    var arrResult = GetCash(cash);
+    console.log("El monto " + cash + " se divide en: ");
+    for(let i = 0; i < arrResult.length; i++) {
+        let res = arrResult[i];
+        Print(res);
+    }
+}
+
+function Print(amount, quantity) {
+    let text = "- " + amount[1] + " billete de " + amount[0];
+    console.log(text);
 }
 
 main();
