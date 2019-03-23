@@ -1,33 +1,53 @@
-// Grupo 6 Estructura de datos. Projgrama que simla un cajero automático en JavaScript.
+// Grupo 5 Estructura de datos.
+// Encontrar el mínimo número de Billetes y/o monedas para representar una cantidad de dinero dada.
 // Creado por Michael Vallejo.
 
-// Los centavos se representan en base a 100.
-// MONEDAS = [1000, 2000, 500, 200, 100, 50, 20, 10, 5, 1, (25/100), (10/100), (5/100), (1/100)];
-MONEDAS = [1000,  500, 100, 50, 20, 10, 5, 1, (25/100), (10/100), (5/100), (1/100)];
+// Listado de monedas soportadas por el sistema.
+MONEDAS = [1000, 2000, 200, 100, 50, 20, 10, 5, 1, (25/100), (10/100), (5/100), (1/100)];
 
-// Ordena los datos del arreglo en forma descendente.
+// ************************* LISTADO DE FUNCIONES AUXILIARES PARA COMPATIBILIDAD CON C *************************
+
+// Función que ordena los datos del arreglo en forma descendente.
 function Sort(data) {
     return data.sort(function(a, b){return b-a});
 }
 
-// Obtiene la cantidad mínima de billetes posibles para un monto dado.
+// Toma el número entero de una cantidad decimal. (Ej.: 2.96 = 2).
+function Floor(floatingNumber){
+    return Math.floor(floatingNumber);
+}
+
+// Función auxiliar que imprime por pantalla un texto.
+function PrintLine(text) {
+    console.log(text);
+}
+
+// ***************************************** FIN FUNCIONES AUXILIARES ******************************************
+
+// Obtiene el cambio para un monto dado con la menor cantidad de monedas/ billetes posibles.
 function GetCash(amount) {
+
+    // Ordenamos el listado de monedas de forma descendente para poder trabajar de la mayor a la menor.
     MONEDAS = Sort(MONEDAS);
 
+    // Arreglo que almacenará la denominación de la moneda y la cantidad de apariciones.
     let Result = [];
+
+    // Variable que almacena temporalmente el monto con el que se está trbajando.
     let tmpAmount = amount;
 
+    // Recorremos el listado de monedas soportadas por el sistema.
     for(let i = 0; i < MONEDAS.length; i++) {
         let currency = MONEDAS[i];
         
-        // Si dividimos el monto restante entre la moneda actual y nos da como resultado un valor mayor a 1,
-        // significa que el monto contiene almenos una de esas monedas.
+        // Dividimos el monto actual entre la denominación de la moneda, para así obtener la cantidad de veces que aparece
+        // una denominación en el monto.
         // Ejemplo: 2150 / 2000 = 1.075, esto significa que en ese monto existe una moneda de 2000.
-        // Ejemplo: 1925 / 2000 = 0.9625, esto significa que en ese monto no existe una moneda de 200.
+        // Ejemplo: 1925 / 2000 = 0.9625, esto significa que en ese monto no existe una moneda de 2000.
+        let division = (tmpAmount / currency);
 
-        let div = (tmpAmount / currency);
-        // Redondeamos la división para obtener la cantidad entera de monedas.
-        let quantity = Math.floor(div);
+        // Obtenemos el número entero de la división (redondeando hacea abajo)
+        let quantity = Floor(division);
 
         if(quantity > 0) {
             tmpAmount = (tmpAmount - (quantity * currency)).toFixed(5);
@@ -47,25 +67,30 @@ function GetCash(amount) {
         //
         // TODO
         //
-        console.log("Sobra dinero:" + tmpAmount);
+        PrintLine("Sobra dinero:" + tmpAmount);
     }
     
     return Result;
 }
 
 function main() {
+    // Monto con el que se desea trabajar. El monto debe ser introducido por el teclado.
     let cash = 1548.43;
-    var arrResult = GetCash(cash);
-    console.log("El monto " + cash + " se divide en: ");
-    for(let i = 0; i < arrResult.length; i++) {
-        let res = arrResult[i];
-        Print(res);
-    }
-}
 
-function Print(amount, quantity) {
-    let text = "- " + amount[1] + " billete de " + amount[0];
-    console.log(text);
+    // Arreglo que almacena el resultado del cálculo.
+    let arrResult = GetCash(cash);
+
+    // Imprimimos el resultado del calculo por pantalla.
+    PrintLine("El monto " + cash + " se divide en: ");
+
+    for(let i = 0; i < arrResult.length; i++) {
+        let amount = arrResult[i];
+
+        let text = "- " + amount[1] + " billete de " + amount[0];
+        PrintLine(text);
+    }
+
+    return 0;
 }
 
 main();

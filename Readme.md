@@ -1,4 +1,4 @@
-# Proyecto final de estructura de datos
+# Proyecto final de estructura de datos - Grupo 5
 
 ## Integrantes
 
@@ -9,6 +9,6 @@
 - Javier Mercedes
 - Ian
 
-[Proyecto 1 - Cajero](./cajero/readme.md)
+[Proyecto 1 - Cajero](https://github.com/mvallejo0922/estructura-final/blob/master/cajero/Readme.md)
 
-[Proyecto 2 - Basket](./basket/readme.md)
+[Proyecto 2 - Basket](https://github.com/mvallejo0922/estructura-final/blob/master/basket/Readme.md)
