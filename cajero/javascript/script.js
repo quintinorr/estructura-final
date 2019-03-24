@@ -3,13 +3,18 @@
 // Creado por Michael Vallejo.
 
 // Listado de monedas soportadas por el sistema.
-MONEDAS = [1000, 2000, 200, 100, 50, 20, 10, 5, 1, (25/100), (10/100), (5/100), (1/100)];
+MONEDAS = [1000, 2000, 200, 100, 50, 25, 20, 10, 5, 1, (25/100), (10/100), (5/100), (1/100)];
 
 // ************************* LISTADO DE FUNCIONES AUXILIARES PARA COMPATIBILIDAD CON C *************************
 
-// Función que ordena los datos del arreglo en forma descendente.
+// Función que ordena los datos del arreglo en forma ascendente.
 function Sort(data) {
-    return data.sort(function(a, b){return b-a});
+    return data.sort(function(a, b){ return a-b });
+}
+
+// Función que ordena los datos del arreglo en forma descendente.
+function SortDescending(data) {
+    return data.sort(function(a, b){ return b-a });
 }
 
 // Toma el número entero de una cantidad decimal. (Ej.: 2.96 = 2).
@@ -22,13 +27,17 @@ function PrintLine(text) {
     console.log(text);
 }
 
+// Función que devuelve la cantidad de veces que se puede encontrar una moneda en un monto.
+function GetCurrencyCount(amount, currency) {
+    let quantity = Floor(amount / currency);
+    return quantity;
+}
+
 // ***************************************** FIN FUNCIONES AUXILIARES ******************************************
 
 // Obtiene el cambio para un monto dado con la menor cantidad de monedas/ billetes posibles.
-function GetCash(amount) {
-
-    // Ordenamos el listado de monedas de forma descendente para poder trabajar de la mayor a la menor.
-    MONEDAS = Sort(MONEDAS);
+function GetCash(amount, MONEDAS) {
+    if (amount == 0 || MONEDAS.length == 0) { return []; }
 
     // Arreglo que almacenará la denominación de la moneda y la cantidad de apariciones.
     let Result = [];
@@ -44,13 +53,14 @@ function GetCash(amount) {
         // una denominación en el monto.
         // Ejemplo: 2150 / 2000 = 1.075, esto significa que en ese monto existe una moneda de 2000.
         // Ejemplo: 1925 / 2000 = 0.9625, esto significa que en ese monto no existe una moneda de 2000.
-        let division = (tmpAmount / currency);
+        let quantity = GetCurrencyCount(tmpAmount, currency);
 
-        // Obtenemos el número entero de la división (redondeando hacea abajo)
-        let quantity = Floor(division);
-
+        // Si la denominación de la moneda existe por lo menos una vez en el monto.
         if(quantity > 0) {
+            // Al monto actual le restamos la cantidad de veces que aparece la moneda multiplicada por su denominación
             tmpAmount = (tmpAmount - (quantity * currency)).toFixed(5);
+
+            // Agregamos la denominación y su cantidad al resultado.
             Result.push([currency, quantity]);
         }
         // Si ya se han obtenido todas las monedas, ya no tenemos por qué seguir ejecutando el bucle, así que salimos de él.
@@ -67,7 +77,7 @@ function GetCash(amount) {
         //
         // TODO
         //
-        PrintLine("Sobra dinero:" + tmpAmount);
+        PrintLine("El sistema no puede realizar el cambio total debido que no no soporta una denominación tan pequeña. Sobran: " + tmpAmount);
     }
     
     return Result;
@@ -76,13 +86,11 @@ function GetCash(amount) {
 function main() {
     // Monto con el que se desea trabajar. El monto debe ser introducido por el teclado.
     let cash = 1548.43;
-
     // Arreglo que almacena el resultado del cálculo.
-    let arrResult = GetCash(cash);
+    let arrResult = GetCash(cash, SortDescending(MONEDAS));
 
-    // Imprimimos el resultado del calculo por pantalla.
+    // Imprimimos por por pantalla el resultado del cálculo.
     PrintLine("El monto " + cash + " se divide en: ");
-
     for(let i = 0; i < arrResult.length; i++) {
         let amount = arrResult[i];
 
