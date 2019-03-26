@@ -1,4 +1,4 @@
-// Grupo 5 Estructura de datos.
+﻿// Grupo 5 Estructura de datos.
 // Encontrar el mínimo número de Billetes y/o monedas para representar una cantidad de dinero dada.
 // Creado por Michael Vallejo.
 
@@ -77,6 +77,7 @@ function GetCash(amount, MONEDAS) {
         //
         // TODO
         //
+	//
         PrintLine("El sistema no puede realizar el cambio total debido que no no soporta una denominación tan pequeña. Sobran: " + tmpAmount);
     }
     
