@@ -77,7 +77,6 @@ function GetCash(amount, MONEDAS) {
         //
         // TODO
         //
-	//
         PrintLine("El sistema no puede realizar el cambio total debido que no no soporta una denominación tan pequeña. Sobran: " + tmpAmount);
     }
     
