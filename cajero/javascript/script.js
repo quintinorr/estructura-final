@@ -3,7 +3,9 @@
 // Creado por Michael Vallejo.
 
 // Listado de monedas soportadas por el sistema.
-MONEDAS = [1000, 2000, 200, 100, 50, 25, 20, 10, 5, 1, (25/100), (10/100), (5/100), (1/100)];
+//MONEDAS = [1000, 2000, 200, 100, 50, 25, 20, 10, 5, 1, (25/100), (10/100), (5/100), (1/100)];
+let CURRENCIES = [2000, 1000, 500, 200];
+
 
 // ************************* LISTADO DE FUNCIONES AUXILIARES PARA COMPATIBILIDAD CON C *************************
 
@@ -101,4 +103,36 @@ function main() {
     return 0;
 }
 
-main();
+
+
+/*
+Monto: 2300
+
+2000     >      1   ->  300
+1000     >      0       
+500      >      0
+200      >      0
+
+
+*/
+//                  2300    [2000, 1000, 500, 200], null
+var RESULT = [];
+function Iteration(amount, MONEDAS) {
+    if(MONEDAS.length == 0) {
+        return amount;
+    }
+    
+    let currency = MONEDAS[0];
+    let count = GetCurrencyCount(amount, currency);
+    let res = amount - (count * currency);
+    if(res == 0){
+        RESULT.push([currency, count]);
+        return 0;
+    }
+    let MO = MONEDAS.slice(1, MONEDAS.length);
+    let ret =  Iteration(res, MO, currency);
+    return ret;
+}
+
+Iteration(3000, CURRENCIES);
+//main();
