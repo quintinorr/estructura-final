@@ -3,9 +3,7 @@
 // Creado por Michael Vallejo.
 
 // Listado de monedas soportadas por el sistema.
-//MONEDAS = [1000, 2000, 200, 100, 50, 25, 20, 10, 5, 1, (25/100), (10/100), (5/100), (1/100)];
-let CURRENCIES = [1000, 500, 200];
-
+MONEDAS = [1000, 2000, 200, 100, 50, 25, 20, 10, 5, 1, (25/100), (10/100), (5/100), (1/100)];
 
 // ************************* LISTADO DE FUNCIONES AUXILIARES PARA COMPATIBILIDAD CON C *************************
 
@@ -103,80 +101,4 @@ function main() {
     return 0;
 }
 
-
-
-/*
-Monto: 3000
-
-2000     >      1   ->  1000
-1000     >      0   ->  0
-500      >      0
-200      >      0
-
-
-*/
-//                  2300    [2000, 1000, 500, 200], null
-var RESULT = [];
-function Iteration(amount, MONEDAS, currency) {
-
-        let count = GetCurrencyCount(amount, currency);
-        let originalAmount = amount;
-        amount = amount - (count * currency);
-        
-        if (amount == 0) {
-            AddToResult([currency, count]);
-            return 0; 
-        }
-        
-        if(MONEDAS.length == 0){ return amount; }
-
-        let newCurrency = MONEDAS[0];
-        let MO = MONEDAS.slice(1, MONEDAS.length);
-
-        for(let i = count; i + 1 > 0; i--) {
-            let tmp = originalAmount - (currency * i);
-            amount =  Iteration(tmp, MO, newCurrency);
-            if(amount == 0 && i > 0) {
-                AddToResult([currency, i]);
-                return 0;
-            }
-        }
-/*
-        if (amount == 0 && count > 0) {
-             AddToResult([currency, count]);
-             return 0;
-        }
-*/
-    return amount;
-}
-
-function AddToArray(arr, data){
-    arr.push(data);
-    return arr;
-}
-
-function AddToResult(data) {
-    RESULT = AddToArray(RESULT, data);
-}
-
-function funcion(){
-    let cash = 1350;
-    let MONEDAS = CURRENCIES;
-
-    for (let i = 0; i < MONEDAS.length; i++){
-        RESULT = [];
-        
-        let currency = MONEDAS[i];
-        let SUBCURRENCIES = MONEDAS.slice(i + 1, MONEDAS.length);
-
-        let res = Iteration(cash, SUBCURRENCIES, currency);
-        if(res == 0) {
-            break;
-        }
-    }
-
-    console.log(RESULT);
-}
-
-funcion();
-//main();
+main();
