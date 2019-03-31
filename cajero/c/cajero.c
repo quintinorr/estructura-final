@@ -1,38 +1,33 @@
 /*
 Grupo 5 Estructura de datos.
-Encontrar el mÃ­nimo nÃºmero de Billetes y/o monedas para representar una cantidad de dinero dada.
+Encontrar el mínimo número de Billetes y/o monedas para representar una cantidad de dinero dada.
 Creado por Javier Mercedes.
 */
 #include <stdio.h>
+#include <stdlib.h>
 
-int main()
+int main(void)
 {
-	//Primero, creamos un array con los billetes que vamos a utilizar 	
-	int MONEDAS[9] = {1000, 2000, 200, 100, 50, 20, 10, 5, 1};
-
-	// Creamos la variables a utilizar para ordenar los valores
-	// del array de mayor a menor y para contar la cantidad de 
-	// elementos en MONEDAS[]
-	int i, pos, aux, countArray;
 	
-	// Contamos los elementos en MONEDA[]
-	countArray = sizeof(MONEDAS) / sizeof(MONEDAS[0]);
-
-	//creamos un bucle para ordenar los numeros por el 
-	// metodo de insercion
-	for (i = 0; i < countArray; i++)
-	{
-		pos = i;
-		aux = MONEDAS[i];
-		while ((pos > 0) && (aux < MONEDAS[pos-1]))
+   	int denominacion[] = {2000, 1000, 500, 200, 100, 50, 25, 10, 5, 1};
+   	int cantidad;
+   	int resultado;
+   	int i;
+   
+   	printf("Introduce la cantidad a calcular: ");
+   	fflush(stdout);
+   	if (scanf("%d", &cantidad) != 1 || cantidad < 1)
+      	return EXIT_FAILURE;
+   
+   	for (i = 0; cantidad > 0; i++)
+   	{
+   		if ((resultado = cantidad / denominacion[i]) > 0)
 		{
-			MONEDAS[pos] = MONEDAS[pos-1];
-			pos--;
-		}
-		MONEDAS[pos] = aux;
+         	printf("Billetes de %3d: %d\n", denominacion[i], resultado);
+         	cantidad %= denominacion[i];
+    	}	
 	}
-	
-	
-	
-    return 0;
+      	
+   
+   return EXIT_SUCCESS;
 }
