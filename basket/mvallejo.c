@@ -7,7 +7,6 @@ Las lecturas deben hacerse en un ciclo y este ciclo debe terminar cuando se digi
 Y gana el equipo que tenga más puntos. Si al final del 5to tiempo hay empate, se va a tiempo extra y 
 dicho tiempo extra será hasta el infinito. Este tiempo extra acabará cuando ya no haya jugadores disponibles 
 en condición física CREATIVIDAD y MUCHO ESMERO.
-
 Grupo 5 - Estructura de datos.
 */
 
@@ -16,14 +15,16 @@ Grupo 5 - Estructura de datos.
 #include <math.h>
 
 // Definimos las constantes de nuestro programa.
-#define cantidadEquipos 2
-#define cantidadJugadores 5
-#define cantidadTiempos 500
-#define tiemposNormal 4
+#define cantidadEquipos 2         // Define la cantidad de equipos que soporta el sistema.
+#define cantidadJugadores 1       // Cantidad de jugadores soportados por el sistema
+#define cantidadTiempos 5       // Almacena el límite de tiempos de un partido.
+#define tiemposNormal 2           // Almacena la cantidad de tiempos que tiene un partido antes de validar la puntiación.
 
-int tiempoActual = 0;
-int EQUIPOS[cantidadEquipos][cantidadTiempos ][cantidadJugadores];
+// Valiables.
+int tiempoActual = 0;             // Indica el tiempo en que se está jugando.
+int EQUIPOS[cantidadEquipos][cantidadTiempos][cantidadJugadores];           // Arreglo de 3 dimensiones que almacena los puntos por jugador, tiempo y partido.
 
+// Función auxiliar que retorna la cantidad de caracteres de un número entero.
 int GetIntLength(int numero) {
 	int longitud = 1;
 	int resultado = numero;
@@ -38,6 +39,7 @@ int GetIntLength(int numero) {
 	return longitud;
 }
 
+// Lee los puntos de cada jugador de un equipo en un tiempo dado.
 void ReadPlayersPoints(int equipo, int tiempo) {
   int jugador;
   for(jugador = 0; jugador < cantidadJugadores; jugador++){
@@ -49,6 +51,7 @@ void ReadPlayersPoints(int equipo, int tiempo) {
   printf("\n");
 }
 
+// Lee Los puntos de un equipo en un tiempo dado.
 void ReadTeamPoints(int tiempo) {
   printf("Inserte los puntos para el tiempo %i: \n", tiempo + 1);
   // Leemos los puntos por cada equipo en el tiempo dado.
@@ -60,8 +63,8 @@ void ReadTeamPoints(int tiempo) {
   printf("** Fin del tiempo %i **\n\n", tiempo + 1);
 }
 
+// Recorre los tiempos y va leyendo los puntods de los jugadores por cada equipo.
 void ReadTimePoints(){
-  // Leemos los puntos por cada tiempo.
   int tiempo;
   for(tiempo = 0; tiempo < tiemposNormal; tiempo++) {
     ReadTeamPoints(tiempo);
@@ -70,6 +73,8 @@ void ReadTimePoints(){
   printf("**** FIN LECTURA ****\n\n");
 }
 
+// Devuelve el índice del arreglo que indica el equipo ganador.
+// Devuelve -404 si hay un empate.
 int GetWinnerTeam(){
 
   int equipoGanador = -404;
@@ -95,8 +100,6 @@ int GetWinnerTeam(){
       totalEquipo += totalTiempo;
     }
 
-    // printf("Total de puntos del equipo %i: %i puntos\n",equipo + 1, totalEquipo);
-
     if(totalEquipo > puntosGanador){
       puntosGanador = totalEquipo;
       equipoGanador = equipo;
@@ -108,6 +111,7 @@ int GetWinnerTeam(){
   return equipoGanador;
 }
 
+// Imprime los resultados de los jugadores en cada tiempo, del equipo indicado.
 void PrintTeamResultTable(int equipo) {
   int jugador;
   printf("          |");
@@ -142,46 +146,57 @@ void PrintTeamResultTable(int equipo) {
   }
 }
 
-// Imprimir el resultado de cada tiempo para cada jugador.
+// Imprimime la tabla de puntuación de los equipos.
 void PrintResult() {
-  printf("******************************************************************\n");
-  printf("*                       Tabla de puntuación                      *\n");
-  printf("******************************************************************\n");
+  printf("****************************************************************************\n");
+  printf("*                            Tabla de puntuación                           *\n");
+  printf("****************************************************************************\n");
 
   int equipo;
   for(equipo = 0; equipo < cantidadEquipos; equipo++) {
-  printf("------------------------------------------------------------------\n");
-  printf("                            Equipo %i                           \n", equipo + 1);
-  printf("------------------------------------------------------------------\n");
+  printf("----------------------------------------------------------------------------\n");
+  printf("                                 Equipo %i                                \n", equipo + 1);
+  printf("----------------------------------------------------------------------------\n");
     PrintTeamResultTable(equipo);
     printf("\n\n");
   }
 }
 
+// Imprime los resultados del equipo ganador.
 void PrintWinner(int winner) {
   if (winner != -404){
-      printf("\n\n******************************************************************\n");
+      printf("****************************************************************************\n");
       printf("*           Felicidades equipo: %i, ¡son los ganadores!           *\n",winner+1);
-      printf("******************************************************************\n");
+      printf("****************************************************************************\n");
   } else {
-      printf("\n\n******************************************************************\n");
-      printf("*                      Ha ocurrido un empate                     *\n");
-      printf("******************************************************************\n");
+      printf("****************************************************************************\n");
+      printf("*                           Ha ocurrido un empate                          *\n");
+      printf("****************************************************************************\n");
   }
 }
 
 int main(void) {
-  
+  //Leemos las puntuaciones de los primeros tiempos.
   ReadTimePoints();
+  // Imprimimos los resultados de los primeros tiempos.
   PrintResult();
-  // Tiempo extra.
+
+  // Valida el equipo ganador. En caso de que haya un empate, sigue en el bucle hasta que se llegue a un desempate o hasta 
+  // que el programa supere el límite indicado en la constante de arriba 
+  // (Los jugadores no se encuentran en condiciones para seguir jugando).
   int winner;
   while((winner = GetWinnerTeam()) == -404) {
       PrintWinner(winner);  
       ReadTeamPoints(tiempoActual);
       tiempoActual++;
+
+      if(tiempoActual == cantidadTiempos){
+        printf("Los jugadores no se encuentran en condiciones para seguir jugando. Partido terminado.\n");
+        break;
+      }
   }
 
+  PrintResult();
   PrintWinner(winner);
 
   return 0;
